@@ -18,20 +18,22 @@ module.exports = {
         allowNull: false,
       },
       userId: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'Users',
           foreignKey: 'id',
         },
       },
-      published: {
+      createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
+        field: 'published',
       },
-      updated: {
+      updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
+        field: 'updated',
       },
     });
   },
