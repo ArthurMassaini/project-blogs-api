@@ -11,8 +11,10 @@ const verifyName = (name) => {
 };
 
 const verifyPassword = (password) => {
-  if (password === undefined || password.length !== 6) {
-    throw new Error('"passoword" is required');
+  if (password === undefined) {
+    throw new Error('"password" is required');
+  } else if (password.length < 6) {
+    throw new Error('"password" length must be 6 characters long');
   }
 };
 
@@ -25,8 +27,6 @@ const verifyEmail = (email, allUsers) => {
     throw new Error('"email" is required');
   } else if (!regexEmail.test(email)) {
     throw new Error('"email" must be a valid email');
-  } else if (email < 6) {
-    throw new Error('"email" length must be at least 6 characters long');
   } else if (userAlreadyExists) {
     throw new Error('User already registered');
   }
