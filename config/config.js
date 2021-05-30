@@ -1,27 +1,27 @@
 require('dotenv/config');
 
-const { MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_HOSTNAME } = process.env;
+const { MYSQL_USER, MYSQL_PASSWORD, HOSTNAME } = process.env;
 
 module.exports = {
   development: {
-    username: MYSQL_USERNAME,
+    username: MYSQL_USER,
     password: MYSQL_PASSWORD,
     database: 'blogs_api',
-    host: MYSQL_HOSTNAME,
+    host: HOSTNAME,
     dialect: 'mysql',
   },
   test: {
-    username: MYSQL_USERNAME,
+    username: MYSQL_USER,
     password: MYSQL_PASSWORD,
     database: 'blogs_api',
-    host: MYSQL_HOSTNAME,
+    host: HOSTNAME,
     dialect: 'mysql',
   },
   production: {
-    username: MYSQL_USERNAME,
+    username: MYSQL_USER,
     password: MYSQL_PASSWORD,
     database: 'blogs_api',
-    host: MYSQL_HOSTNAME,
+    host: HOSTNAME,
     dialect: 'mysql',
   },
 };
