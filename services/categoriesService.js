@@ -21,4 +21,10 @@ const createCategory = async (name) => {
   }
 };
 
-module.exports = { createCategory };
+const getAllCategories = async () => {
+  const allUsers = await Category.findAll();
+
+  return allUsers;
+};
+
+module.exports = { createCategory, getAllCategories };
