@@ -7,8 +7,10 @@ const {
   STATUS_CONFLICT,
   STATUS_CREATED,
   STATUS_BAD_REQUEST,
+  STATUS_OK,
 } = require('./statusResponses');
 
+// prettier-ignore
 const createUser = async (req, res) => {
   const { displayName, email, password, image } = req.body;
 
@@ -32,4 +34,10 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser };
+const getAllUsers = async (req, res) => {
+  const result = await usersService.getAllUsers();
+
+  res.status(STATUS_OK).json(result);
+};
+
+module.exports = { createUser, getAllUsers };

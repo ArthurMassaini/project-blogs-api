@@ -8,17 +8,18 @@ const authMiddleware = async (req, res, next) => {
   const { JWT_SECRET } = process.env;
 
   if (!token) {
-    res.status(STATUS_UNAUTHORIZED).json({ message: 'missing auth token' });
+    res.status(STATUS_UNAUTHORIZED).json({ message: 'Token not found' });
   } else {
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
       console.log(decoded);
       // const user = await usersModel.getUserByEmail(decoded.data.email);
       // const { } = user;
-
       next();
     } catch (error) {
-      res.status(STATUS_UNAUTHORIZED).json({ message: error.message });
+      res
+        .status(STATUS_UNAUTHORIZED)
+        .json({ message: 'Expired or invalid token' });
     }
   }
 };
