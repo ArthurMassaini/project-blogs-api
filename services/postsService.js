@@ -1,4 +1,4 @@
-const { BlogPost, Category, User } = require('../models');
+const { BlogPost, Category, User, PostsCategory } = require('../models');
 
 // ----------------------------------------- Validate functions
 
@@ -103,4 +103,31 @@ const updatePost = async (id, title, content, userId) => {
   }
 };
 
-module.exports = { createPost, getAllPosts, getPostById, updatePost };
+const deletePost = async (id, userId) => {
+  const post = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user' },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  if (post === null) {
+    return 'Post does not exist';
+  }
+  try {
+    verifyUser(post, userId);
+
+    await PostsCategory.destroy({ where: { postId: id } });
+    const deletedPost = await BlogPost.destroy({ where: { id } });
+    return deletedPost;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+module.exports = {
+  createPost,
+  getAllPosts,
+  getPostById,
+  updatePost,
+  deletePost,
+};

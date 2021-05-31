@@ -69,4 +69,25 @@ const updatePost = async (req, res) => {
   }
 };
 
-module.exports = { createPost, getAllPosts, getPostById, updatePost };
+const deletePost = async (req, res) => {
+  const { id } = req.params;
+  const { id: userId } = req.user;
+
+  const result = await postsService.deletePost(id, userId);
+
+  if (result === 'Unauthorized user') {
+    res.status(STATUS_UNAUTHORIZED).json({ message: result });
+  } else if (typeof result === 'string') {
+    res.status(STATUS_NOT_FOUND).json({ message: result });
+  } else {
+    res.status(204).send();
+  }
+};
+
+module.exports = {
+  createPost,
+  getAllPosts,
+  getPostById,
+  updatePost,
+  deletePost,
+};
