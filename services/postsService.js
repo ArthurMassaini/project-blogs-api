@@ -34,6 +34,12 @@ const verifyCategoryIdExists = (categoryIds, allCategories) => {
   }
 };
 
+const verifyUser = (post, userId) => {
+  if (post.userId !== userId) {
+    throw new Error('Unauthorized user');
+  }
+};
+
 // ----------------------------------------- Service functions
 
 const createPost = async (title, content, categoryIds, userId) => {
@@ -76,4 +82,25 @@ const getPostById = async (id) => {
   return post;
 };
 
-module.exports = { createPost, getAllPosts, getPostById };
+const updatePost = async (id, title, content, userId) => {
+  const post = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user' },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  try {
+    verifyTitle(title);
+    verifyContent(content);
+    verifyUser(post, userId);
+
+    await BlogPost.update({ title, content }, { where: { id } });
+
+    return { title, content, userId, categories: post.categories };
+  } catch (error) {
+    return error.message;
+  }
+};
+
+module.exports = { createPost, getAllPosts, getPostById, updatePost };
