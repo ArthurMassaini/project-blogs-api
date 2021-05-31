@@ -1,4 +1,4 @@
-const { BlogPost, Category } = require('../models');
+const { BlogPost, Category, User } = require('../models');
 
 // ----------------------------------------- Validate functions
 
@@ -52,4 +52,15 @@ const createPost = async (title, content, categoryIds, userId) => {
   }
 };
 
-module.exports = { createPost };
+const getAllPosts = async () => {
+  const allPosts = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user' },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  return allPosts;
+};
+
+module.exports = { createPost, getAllPosts };
