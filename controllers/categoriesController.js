@@ -1,8 +1,10 @@
-require('dotenv').config();
-
 const categoriesService = require('../services/categoriesService');
 
-const { STATUS_CREATED, STATUS_BAD_REQUEST, STATUS_OK } = require('./statusResponses');
+const {
+  STATUS_CREATED,
+  STATUS_BAD_REQUEST,
+  STATUS_OK,
+} = require('./statusResponses');
 
 const createCategory = async (req, res) => {
   const { name } = req.body;
@@ -17,9 +19,9 @@ const createCategory = async (req, res) => {
 };
 
 const getAllCategories = async (req, res) => {
-    const result = await categoriesService.getAllCategories();
-  
-    res.status(STATUS_OK).json(result);
-  };
+  const result = await categoriesService.getAllCategories();
+
+  res.status(STATUS_OK).json(result);
+};
 
 module.exports = { createCategory, getAllCategories };

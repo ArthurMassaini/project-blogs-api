@@ -2,7 +2,12 @@ const { PostsCategory } = require('../models');
 
 const postsService = require('../services/postsService');
 
-const { STATUS_CREATED, STATUS_BAD_REQUEST, STATUS_OK } = require('./statusResponses');
+const {
+  STATUS_CREATED,
+  STATUS_BAD_REQUEST,
+  STATUS_OK,
+  STATUS_NOT_FOUND,
+} = require('./statusResponses');
 
 const createPost = async (req, res) => {
   const { title, content, categoryIds } = req.body;
@@ -32,4 +37,15 @@ const getAllPosts = async (req, res) => {
   res.status(STATUS_OK).json(result);
 };
 
-module.exports = { createPost, getAllPosts };
+const getPostById = async (req, res) => {
+  const { id } = req.params;
+  const result = await postsService.getPostById(id);
+
+  if (typeof result === 'string') {
+    res.status(STATUS_NOT_FOUND).json({ message: result });
+  } else {
+    res.status(STATUS_OK).json(result);
+  }
+};
+
+module.exports = { createPost, getAllPosts, getPostById };

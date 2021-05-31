@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.post('/post', authMiddleware, rescue(postsController.createPost));
 router.get('/post', authMiddleware, rescue(postsController.getAllPosts));
-// router.get('/user/:id', authMiddleware, rescue(postsController.getUserById));
+router.get('/post/:id', authMiddleware, rescue(postsController.getPostById));
 
 module.exports = router;
