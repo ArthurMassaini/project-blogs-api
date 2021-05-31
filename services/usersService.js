@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, PostsCategory, BlogPost } = require('../models');
 
 // ----------------------------------------- Validate functions
 
@@ -63,4 +63,14 @@ const getUserById = async (id) => {
   return user;
 };
 
-module.exports = { createUser, getAllUsers, getUserById };
+const deleteUser = async (userId) => {
+  try {
+    await PostsCategory.destroy({ where: { userId } });
+    await BlogPost.destroy({ where: { userId } });
+    await User.destroy({ where: { userId } });
+  } catch (error) {
+    return error.message;
+  }
+};
+
+module.exports = { createUser, getAllUsers, getUserById, deleteUser };
