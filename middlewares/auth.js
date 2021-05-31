@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-// const usersModel = require('../models/usersModel');
+const { User } = require('../models');
 
 const STATUS_UNAUTHORIZED = 401;
 
@@ -12,9 +12,9 @@ const authMiddleware = async (req, res, next) => {
   } else {
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
-      console.log(decoded);
-      // const user = await usersModel.getUserByEmail(decoded.data.email);
-      // const { } = user;
+      const user = await User.findOne({ where: { email: decoded.data.email } });
+      req.user = user;
+
       next();
     } catch (error) {
       res
