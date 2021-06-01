@@ -86,6 +86,7 @@ const deletePost = async (req, res) => {
 
 const getPostByTerm = async (req, res) => {
   const { q: searchTerm } = req.query;
+  console.log(searchTerm);
   const result = await postsService.getPostByTerm(searchTerm);
 
   res.status(STATUS_OK).json(result);

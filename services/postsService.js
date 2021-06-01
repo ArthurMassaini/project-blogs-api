@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, Category, User, PostsCategory } = require('../models');
 
 // ----------------------------------------- Validate functions
@@ -131,17 +132,16 @@ const getPostByTerm = async (searchTerm) => {
       { model: Category, as: 'categories', through: { attributes: [] } },
     ],
   });
-  const post = await BlogPost.findOne(
-    { where: { $or: [{ title: searchTerm }, { content: searchTerm }] } },
-    {
-      include: [
-        { model: User, as: 'user' },
-        { model: Category, as: 'categories', through: { attributes: [] } },
-      ],
-    },
-  );
-  
+
   if (searchTerm === undefined || searchTerm === '') return allPosts;
+
+  const post = await BlogPost.findAll({
+    where: { [Op.or]: [{ title: searchTerm }, { content: searchTerm }] },
+    include: [
+      { model: User, as: 'user' },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
 
   return post;
 };
