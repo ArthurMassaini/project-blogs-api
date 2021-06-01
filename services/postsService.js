@@ -124,10 +124,33 @@ const deletePost = async (id, userId) => {
   }
 };
 
+const getPostByTerm = async (searchTerm) => {
+  const allPosts = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user' },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  const post = await BlogPost.findOne(
+    { where: { $or: [{ title: searchTerm }, { content: searchTerm }] } },
+    {
+      include: [
+        { model: User, as: 'user' },
+        { model: Category, as: 'categories', through: { attributes: [] } },
+      ],
+    },
+  );
+  
+  if (searchTerm === undefined || searchTerm === '') return allPosts;
+
+  return post;
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   updatePost,
   deletePost,
+  getPostByTerm,
 };
